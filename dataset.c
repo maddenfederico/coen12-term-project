@@ -4,7 +4,13 @@ MFW 10:30AM
 5/8/2018
 */
 
+
+//MY DUDES we are using A Sorted array and tHAT IS FINAL
+
+
 #include<stdio.h>
+#include<assert.h>
+
 
 typedef struct student
 {
@@ -16,7 +22,7 @@ typedef struct set
 {
 	int count;
 	int length;
-	STUDENT* list;
+	STUDENT* students;
 }SET;
 
 
@@ -28,49 +34,89 @@ void insertion(SET *sp, STUDENT stu);
 void deletion(SET *sp, int age);
 int maxAgeGap(SET *sp);
 
+static int search(SET *sp, STUDENT stu);
 
-void insertion(SET *sp, STUDENT stu)//Add string elt to the passed set 
+//Adapted
+SET* createDataSet(int maxStudents)
 {
-	bool found;
-	int index = search(sp, stu->age, &found);//Find correct index for elt
+	SET *sp = malloc(sizeof(SET));
+	assert(sp != NUll);
 
-	if((sp->count < sp->length) && (!found))//Check if array capacity has been reached and if elt already exists in the set
+	sp->count = 0;
+	sp->length = maxStudents;
+
+	sp->students = malloc(sizeof(STUDENT)*sp->length);
+
+	return sp;
+}
+//Adapted
+void insertion(SET *sp, STUDENT stu)
+{
+	bool found;//We don't care whether its found. Search just needs this
+	int index = search(sp, stu->age, &found);//Find correct index for stu
+
+	if(sp->count < sp->length)
 	{
 		for(int i = sp->count; i >  index; i--)//Shift all elements below index down to make space for elt and add elt
 		{
-			sp->a[i] = sp->a[i-1];
+			sp->list[i] = sp->list[i-1];
 		}
-		sp->a[index] = malloc(sizeof(char)*(strlen(elt)+1));
-		assert((sp->a[index]) != NULL);
 		
-		strcpy((sp->a[index]), elt);
+		sp->list[idx] = stu;
+
 		sp->count += 1;
 	}
 }
 
-int searchAge(SET *sp, int age, bool *found)//Look for string elt in set sp and return index of where it is/should be placed. Also store search result in bool found. Not publicly accessed.
+void deletion(SET *sp, int age)
 {
+	assert(sp != NULL);
+}
 
+
+//Not Adapted
+STUDENT *searchAge(SET *sp, int age)
+{
+	bool found;
+	STUDENT dummy = {age, NULL};
+
+	int idx = search(sp, dummy, &found);
+
+	
+
+}
+
+static int search(SET *sp, STUDENT stu, *found)
+{
 	int lo, hi, mid; lo = 0, hi = sp->count-1;
     
     while(lo <= hi)//Binary search for index of elt
     {
         mid = (lo+hi)/2;
-        if(strcmp(elt, sp->a[mid]) < 0)
+        if(age < sp->students[mid].age)
         {
             hi = mid - 1;
         }
-        else if(strcmp(elt, sp->a[mid]) > 0)
+        else if(age < sp->students[mid].age)
         {
             lo = mid + 1;
         }
         else
         {
-            *found = true;
+        	*found = true;
             return mid;
         }
-       
     }
     *found = false;
     return lo;
+}
+
+int maxAgeGap(SET *sp)
+{
+	assert(sp != NULL);
+
+	if(sp->count > 1)
+		return((sp->students[count-1].age) - (sp->students[0].age));
+	else
+		return NULL;
 }
