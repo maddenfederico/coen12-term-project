@@ -99,7 +99,7 @@ void deletion(SET *sp, STUDENT* stu)//Vulnerability: Doesn't check that stu is a
 }
 
 
-//Not Adapted
+//Adapted
 STUDENT *searchAge(SET *sp, int age)
 {
 	assert(sp != NULL);
@@ -118,7 +118,9 @@ STUDENT *searchAge(SET *sp, int age)
 		}
 		p = p->next;
 	}
-	
+	stuList[i] = NULL;
+
+	return(stuList);
 }
 
 //Adapted
