@@ -6,46 +6,23 @@ MFW 10:30AM
 
 #include<stdio.h>
 #include<assert.h>
+#include "dataset.h"
+#include<stdlib.h>
+#include<string.h>
 
 #define AGE_INTERVAL 18
 
-//Just use ages array
-
-typedef struct student
-{
-	int age;
-	int id;
-	int ageCount[AGE_INTERVAL];
-	STUDENT *next;
-	STUDENT *prev;
-}STUDENT;
-
-typedef struct set
-{
-	int count;
-	STUDENT* dummy;
-}SET;
 
 
-
-SET* createDataSet();
-void destroyDataSet(SET *sp);
-STUDENT* searchAge(SET *sp, int age);
-STUDENT* searchID(SET *sp, int id);
-void insertion(SET *sp, STUDENT stu);
-void deletion(SET *sp, STUDENT *p);
-int maxAgeGap(SET *sp);
-
-static int search(SET *sp, STUDENT stu);
 
 //Adapted
-SET* createDataSet()
+SET* createSet()
 {
     SET *sp = malloc(sizeof(SET));
     assert(sp !=NULL);
 
     sp->count = 0;
-    sp->ageCount[] = {0};
+	memset(sp->ageCount, 0, AGE_INTERVAL);
 
     sp->dummy = malloc(sizeof(STUDENT));
     assert(sp->dummy!= NULL);
@@ -57,7 +34,7 @@ SET* createDataSet()
 }
 
 //Adapted
-void destroyDataSet(SET *sp)
+void destroySet(SET *sp)
 {
 	assert(sp!=NULL);
 
@@ -83,7 +60,7 @@ void insertion(SET *sp, STUDENT stu)
 
 	//Hook p up to the nodes next to it
 	sp->dummy->next->prev = p;
-	sp->next = sp->dummy->next;
+	p->next = sp->dummy->next;
 	sp->dummy->next = p;
 	p->prev = sp->dummy;
 
@@ -111,7 +88,7 @@ void deletion(SET *sp, STUDENT *p)//Vulnerability: Doesn't check that stu is a m
 
 
 //Adapted
-STUDENT *searchAge(SET *sp, int age)
+STUDENT** searchAge(SET *sp, int age)
 {
 	assert(sp != NULL);
 
@@ -120,7 +97,7 @@ STUDENT *searchAge(SET *sp, int age)
 	STUDENT** stuList = malloc(sizeof(STUDENT*) * sp->ageCount[age - AGE_INTERVAL] + 1);
 	assert(stuList != NULL);
 
-	NODE *p = sp->dummy->next;
+	STUDENT *p = sp->dummy->next;
 	int i = 0;
 	while(p != sp->dummy)//Loop though list in search of item
 	{
@@ -133,7 +110,7 @@ STUDENT *searchAge(SET *sp, int age)
 	}
 	stuList[i] = NULL;
 
-	if(stuList[0] = NULL)
+	if(stuList[0] == NULL)
 	{
 		printf("No match found for age: %d\n", age);
 	}
@@ -145,24 +122,24 @@ STUDENT *searchAge(SET *sp, int age)
 }
 
 //Adapted
-static int searchID(SET *sp, int id)
+STUDENT* searchID(SET *sp, int id)
 {
 	assert(sp != NULL);
 
 	printf("Searching for ID: %d\n", id);
 
-	NODE *p = sp->dummy->next;
+	STUDENT *p = sp->dummy->next;
 
 	while(p != sp->dummy)//Loop though list in search of item
 	{
 		if(p->id == id)
 		{
-			printf("Match found for ID: %d", id);
+			printf("Match found for ID: %d\n", id);
 			return(p);
 		}
 		p = p->next;
 	}
-	printf("No match found for ID: %d", id);
+	printf("No match found for ID: %d\n", id);
 	return NULL;
 }
 
@@ -185,5 +162,5 @@ int maxAgeGap(SET *sp)
 		return(max - min);
 	}
 	else
-		return NULL;
+		return -1; 
 }
