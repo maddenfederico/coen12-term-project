@@ -33,7 +33,7 @@ void destroyDataSet(SET *sp);
 STUDENT* searchAge(SET *sp, int age);
 STUDENT* searchID(SET *sp, int id);
 void insertion(SET *sp, STUDENT stu);
-void deletion(SET *sp, int age);
+void deletion(SET *sp, STUDENT *p);
 int maxAgeGap(SET *sp);
 
 static int search(SET *sp, STUDENT stu);
@@ -91,17 +91,22 @@ void insertion(SET *sp, STUDENT stu)
 	sp->count += 1;
 }
 //Adapted
-void deletion(SET *sp, STUDENT* stu)//Vulnerability: Doesn't check that stu is a member of sp
+void deletion(SET *sp, STUDENT *p)//Vulnerability: Doesn't check that stu is a member of sp
 {
 	assert(sp != NULL);
 	assert(sp->dummy->next != sp->dummy);//Check that list isn't empty
-	assert(stu != NULL);
+	assert(p != NULL);
+
+
 
 	//Unhook node from list
-	stu->next->prev = stu->prev;
-	stu->prev->next = stu->next;	
-	free(p);
+	p->next->prev = p->prev;
+	p->prev->next = p->next;	
+
+	sp->ageCount[(p->age) - AGE_INTERVAL] -= 1;
 	sp->count -= 1;
+	free(p);
+	printf("Deleted student with age %d and ID %d\n", p->age, p->id);
 }
 
 
@@ -110,7 +115,9 @@ STUDENT *searchAge(SET *sp, int age)
 {
 	assert(sp != NULL);
 
-	STUDENT** stuList = malloc(sizeof(STUDENT*)*sp->count);
+	printf("Searching for age: %d\n", age);
+
+	STUDENT** stuList = malloc(sizeof(STUDENT*) * sp->ageCount[age - AGE_INTERVAL] + 1);
 	assert(stuList != NULL);
 
 	NODE *p = sp->dummy->next;
@@ -126,6 +133,14 @@ STUDENT *searchAge(SET *sp, int age)
 	}
 	stuList[i] = NULL;
 
+	if(stuList[0] = NULL)
+	{
+		printf("No match found for age: %d\n", age);
+	}
+	else
+	{
+		printf("Match found for age: %d\n", age);
+	}
 	return(stuList);
 }
 
@@ -134,16 +149,20 @@ static int searchID(SET *sp, int id)
 {
 	assert(sp != NULL);
 
+	printf("Searching for ID: %d\n", id);
+
 	NODE *p = sp->dummy->next;
 
 	while(p != sp->dummy)//Loop though list in search of item
 	{
 		if(p->id == id)
 		{
+			printf("Match found for ID: %d", id);
 			return(p);
 		}
 		p = p->next;
 	}
+	printf("No match found for ID: %d", id);
 	return NULL;
 }
 
@@ -153,7 +172,18 @@ int maxAgeGap(SET *sp)
 	assert(sp != NULL);
 
 	if(sp->count > 1)
-		return((sp->students[count-1].age) - (sp->students[0].age));
+	{
+		int min = 0;
+		while(sp->ageCount[min] == 0)
+			min++;
+
+		int max = AGE_INTERVAL-1;
+		while(sp->ageCount[max] == 0)
+			max--;
+
+		printf("Max age gap is %d\n", max-min);
+		return(max - min);
+	}
 	else
 		return NULL;
 }

@@ -29,4 +29,6 @@ int main()
 	}
 
 	printf("Max age gap is: %d", maxAgeGap(sp));
+
+	destroySet(sp);
 }
