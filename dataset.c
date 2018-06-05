@@ -5,7 +5,7 @@ MFW 10:30AM
 */
 
 
-//MY DUDES we are using A Sorted array and tHAT IS FINAL
+
 
 
 #include<stdio.h>
