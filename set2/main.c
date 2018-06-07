@@ -19,15 +19,15 @@ int main()
 	for(int i = 0; i < 1000; i++)
 	{
 		id += ((rand() % 2) +1);
-		STUDENT stu;
-		stu.age = age;
-		stu.id = id;
+		STUDENT stu = malloc(sizeof(STUDENT));
+		stu->age = age;
+		stu->id = id;
 
 		insertion(sp, stu);
 	}
 
 	id = ((rand() % 2000) +1);
-	STUDENT p = searchID(sp, id);
+	STUDENT *p = searchID(sp, id);
 
 	if(p != NULL)
 	{

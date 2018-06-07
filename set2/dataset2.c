@@ -28,7 +28,7 @@ SET *createDataSet(int maxStudents)
 	sp->length = maxStudents;
 	sp->count = 0;
 	
-	sp->students = malloc(sizeof(STUDENT)*maxStudents);
+	sp->students = malloc(sizeof(STUDENT*)*maxStudents);
 	assert(sp->students != NULL);
 
 	sp->flags = malloc(sizeof(int)*maxStudents);
@@ -41,7 +41,7 @@ SET *createDataSet(int maxStudents)
 
 //Adapted
 //Hash the passed element and place it into the table of the passed set
-void insertion(SET *sp, STUDENT stu)
+void insertion(SET *sp, STUDENT *stu)
 {
 	assert(sp != NULL);
 	assert(stu != NULL);
@@ -58,7 +58,7 @@ void insertion(SET *sp, STUDENT stu)
 
 //Adapted
 //Search through the table for passed stu in sp and remove if found.
-void deletion(SET *sp, STUDENT stu)
+void deletion(SET *sp, STUDENT *stu)
 {
 	assert(sp!= NULL);
 	assert(stu != NULL);
@@ -67,9 +67,10 @@ void deletion(SET *sp, STUDENT stu)
 	
 	if(found)
 	{
+		free()
 		sp->flags[idx] = DELETED;
 		sp->count -= 1;
-		printf("Deleted student with age %d and ID %d\n", stu.age, stu.id);
+		printf("Deleted student with age %d and ID %d\n", st->age, stu->id);
 	}
 }
 
@@ -78,6 +79,14 @@ void deletion(SET *sp, STUDENT stu)
 void destroyDataSet(SET *sp)
 {
 	assert(sp != NULL);
+	for(int i = 0; i < sp->count; i++)
+	{
+		if(sp->students[i] != NULL)
+		{
+			free(sp->students[i]);
+		}		
+	}
+
 	free(sp->students);
 	free(sp->flags);
 	free(sp);
@@ -86,13 +95,13 @@ void destroyDataSet(SET *sp)
 //Adapted
 /*Search through hash table for actual/appropriate location of passed stu.
  * Passed bool will store whether stu was found or not*/
-static int search(SET *sp, STUDENT stu, bool *found)
+static int search(SET *sp, STUDENT *stu, bool *found)
 {
 	
 	assert(sp!=NULL);
 	assert(stu != NULL);
 
-	int start = stu.id % sp->length;
+	int start = stu->id % sp->length;
 	int idx;
 
 	bool foundDel = false;
@@ -102,7 +111,7 @@ static int search(SET *sp, STUDENT stu, bool *found)
 		idx = (start + i) % sp->length;
 		if(sp->flags[idx] == FILLED)
 		{
-			if(stu.id == sp->students[idx].id)
+			if(stu->id == sp->students[idx]->id)
 			{
 				*found = true;
 				return idx;
@@ -130,11 +139,11 @@ STUDENT searchID(SET *sp, int id)
 	assert(sp!=NULL);
 
 	bool found;
-	STUDENT dummy = {NULL, id};
+	STUDENT searcher = {NULL, id};
 
 	printf("Searching for ID: %d\n", id);
-	int index = search(sp, dummy, &found);
-	
+	int index = search(sp, &searcher, &found);
+
 	if(found)
 	{
 		printf("Match found for ID: %d\n", id);
