@@ -10,7 +10,7 @@ Prof. Liu COEN 12*/
 int main()
 {
 
-	SET *sp = createSet();
+	SET *sp = createDataSet();
 
 	srand(time(0));
 
@@ -34,5 +34,5 @@ int main()
 		deletion(sp, p);
 	}
 
-	destroySet(sp);
+	destroyDataSet(sp);
 }
