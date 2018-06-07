@@ -15,7 +15,7 @@ PROJECT 3 */
 
 
 
-static int search(SET *sp, void *stu, bool *found);
+static int search(SET *sp, STUDENT *stu, bool *found);
 
 //Adapted
 //Create a set of size maxStudents and initialize with functions passed by client.
@@ -49,28 +49,34 @@ void insertion(SET *sp, STUDENT *stu)
 	int idx = search(sp, stu, &found);
 
 	if(sp->count < sp->length)//check if array capacity has been reached and if stu already exists in the set
-	{
+	{				
 		sp->students[idx] = stu;		
 		sp->count++;
 		sp->flags[idx] = FILLED;
 	}
 }
 
-//Adapted
 //Search through the table for passed stu in sp and remove if found.
 void deletion(SET *sp, STUDENT *stu)
 {
 	assert(sp!= NULL);
 	assert(stu != NULL);
+
 	bool found = false;
 	int idx = search(sp, stu, &found);
 	
 	if(found)
 	{
-		free()
+		free(sp->students[idx]);
 		sp->flags[idx] = DELETED;
 		sp->count -= 1;
-		printf("Deleted student with age %d and ID %d\n", st->age, stu->id);
+		printf("Deleted student with age %d and ID %d\n", stu->age, stu->id);
+	}
+	else
+	{
+		int age = stu->age;
+		int id = stu->id;
+		printf("Failed to delete student with age %d and ID %d;Not found\n", age, id);
 	}
 }
 
@@ -81,7 +87,7 @@ void destroyDataSet(SET *sp)
 	assert(sp != NULL);
 	for(int i = 0; i < sp->count; i++)
 	{
-		if(sp->students[i] != NULL)
+		if(sp->flags[i] == FILLED)
 		{
 			free(sp->students[i]);
 		}		
@@ -134,15 +140,19 @@ static int search(SET *sp, STUDENT *stu, bool *found)
 }
 
 //Client accessible function to search()
-STUDENT searchID(SET *sp, int id)
+STUDENT* searchID(SET *sp, int id)
 {
 	assert(sp!=NULL);
 
-	bool found;
-	STUDENT searcher = {NULL, id};
+	bool found = false;
+	STUDENT* searcher = malloc(sizeof(STUDENT));
+	searcher->age = -1;
+	searcher->id = id;
 
 	printf("Searching for ID: %d\n", id);
-	int index = search(sp, &searcher, &found);
+	int index = search(sp, searcher, &found);
+	
+	free(searcher); 
 
 	if(found)
 	{
