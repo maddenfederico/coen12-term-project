@@ -69,6 +69,7 @@ void deletion(SET *sp, STUDENT stu)
 	{
 		sp->flags[idx] = DELETED;
 		sp->count -= 1;
+		printf("Deleted student with age %d and ID %d\n", stu.age, stu.id);
 	}
 }
 
@@ -130,14 +131,18 @@ STUDENT searchID(SET *sp, int id)
 
 	bool found;
 	STUDENT dummy = {NULL, id};
+
+	printf("Searching for ID: %d\n", id);
 	int index = search(sp, dummy, &found);
 	
 	if(found)
 	{
+		printf("Match found for ID: %d\n", id);
 		return(sp->students[index]);
 	}
 	else
 	{
+		printf("No match found for ID: %d\n", id);
 		return NULL;
 	}
 }
