@@ -31,12 +31,22 @@ int main()
 	id = ((rand() % 2000) +1);
 	STUDENT *p = searchID(sp, id);
 
-	if(p != NULL)
+	STUDENT *q = malloc(sizeof(STUDENT));
+	q->age = (rand() % 18) + 18;
+	q->id = (rand() % 2000);
+
+	STUDENT *del = searchID(sp, q->id);
+
+	if(del != NULL)
 	{
-		deletion(sp, p);
+		deletion(sp, del);
+	}
+	else
+	{
+		printf("Failed to delete student with id %d\n", q->id);
 	}
 
 	maxAgeGap(sp);
-
+	free(q);
 	destroyDataSet(sp);
 }

@@ -74,7 +74,7 @@ void deletion(SET *sp, STUDENT *p)//O(1)
 	assert(sp != NULL);
 	assert(sp->dummy->next != sp->dummy);//Check that list isn't empty
 	assert(p != NULL);
-
+	
 
 
 	//Unhook node from list
