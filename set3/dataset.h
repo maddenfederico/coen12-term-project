@@ -16,9 +16,9 @@ typedef struct set
 	STUDENT *dummy;
 }SET;
 
-extern SET* createSet();
+extern SET* createDataSet();
 
-extern void destroySet(SET *sp);//Rename these eventually
+extern void destroyDataSet(SET *sp);//Rename these eventually
 
 extern STUDENT** searchAge(SET *sp, int age);
 
