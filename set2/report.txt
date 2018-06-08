@@ -1,0 +1,15 @@
+SET* createDataSet();//O(n)
+
+void destroyDataSet(SET *sp);//O(n)
+
+STUDENT* searchID(SET *sp, int id);//O(1) avg case, O(n) worst case
+
+void insertion(SET *sp, STUDENT *stu);//O(1) avg case, O(n) worst case	
+
+void deletion(SET *sp, STUDENT *stu);//O(1) avg case, O(n) worst case
+
+I chose a hash table for this student set because it's the fastest way to do searches
+on a set where each element has a unique identifier. While the worst case run time for those 
+operations is O(n), it is very unlikely to ever actually take that long to access an element. 
+For example, using a sorted array would have a worst case search time of O(logn), but hash tables
+are normally faster than that regardless. 

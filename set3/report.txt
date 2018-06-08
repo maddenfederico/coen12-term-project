@@ -1,0 +1,19 @@
+SET* createSet();//O(1)
+
+
+void destroyDataSet(SET *sp);//O(n)
+
+STUDENT** searchAge(SET *sp, int age);//O(n)
+
+STUDENT* searchID(SET *sp, int id);//O(n)
+
+void insertion(SET *sp, STUDENT stu);//O(1)
+
+void deletion(SET *sp, STUDENT *p);//O(1)
+
+int maxAgeGap(SET *sp);//O(1)
+
+
+I chose a circular linked list because it would allow me to have insertion and deletion run in O(1) time. In order to have maxAgeGap work in O(1), I had to keep
+track of how many students of each age were in the list. I could have used a hash table with chaining instead, with each possible age serving as a key to get the same effect, but 
+that would make looping through the whole list at once more complex, and I figured I could get the same effect with a separate array. 
